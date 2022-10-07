@@ -216,7 +216,7 @@ const Cart = () => {
         <Bottom>
           <Info>
             {cart.products?.map((product, i) => (
-              <Product key={i}>
+              <Product key={i + 1}>
                 <ProductDetail>
                   <Image src={product.img} />
                   <Details>
