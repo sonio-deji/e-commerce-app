@@ -3,6 +3,7 @@ import { useState } from "react";
 import { login } from "../redux/apiCalls";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 
 const Container = styled.div`
   width: 100vw;
@@ -66,16 +67,33 @@ const Error = styled.span`
   color: red;
   font-size: 15px;
 `;
+const Label = styled.label`
+  position: relative;
+`;
+const Eye = styled.div`
+  position: absolute;
+  top: 5px;
+  right: 0;
+`;
 
 const Login = () => {
   const dispatch = useDispatch();
   const [username, setusername] = useState("");
   const [password, setpassword] = useState("");
+  const [inputType, setInputType] = useState("password");
+
   const { isFetching, error } = useSelector((state) => state.user);
 
   const handleClick = (e) => {
     e.preventDefault();
     login(dispatch, { username, password });
+  };
+  const handleInputType = () => {
+    if (inputType === "password") {
+      setInputType("text");
+    } else {
+      setInputType("password");
+    }
   };
 
   return (
@@ -87,11 +105,17 @@ const Login = () => {
             placeholder="username"
             onChange={(e) => setusername(e.target.value)}
           />
-          <Input
-            placeholder="password"
-            type={"password"}
-            onChange={(e) => setpassword(e.target.value)}
-          />
+          <Label>
+            <Input
+              placeholder="password"
+              onChange={(e) => setpassword(e.target.value)}
+              type={inputType}
+            />
+            <Eye>
+              <VisibilityIcon onCLick={handleInputType} />
+            </Eye>
+          </Label>
+
           <Button onClick={handleClick} disabled={isFetching}>
             LOGIN
           </Button>

@@ -2,6 +2,7 @@ import styled from "styled-components";
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 
 const Container = styled.div`
   width: 100vw;
@@ -57,6 +58,14 @@ const Error = styled.p`
   margin: 20px 0px;
   color: red;
   text-align: center;
+`;
+const Label = styled.label`
+  position: relative;
+`;
+const Eye = styled.div`
+  position: absolute;
+  top: 5px;
+  right: 0;
 `;
 
 function Register() {
@@ -115,14 +124,27 @@ function Register() {
             placeholder="email"
             onChange={(e) => setEmail(e.target.value)}
           />
-          <Input
-            placeholder="password"
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <Input
-            placeholder="confirm password"
-            onChange={(e) => setConfirmPassword(e.target.value)}
-          />
+          <Label>
+            <Input
+              placeholder="password"
+              onChange={(e) => setPassword(e.target.value)}
+              type="password"
+            />
+            <Eye>
+              <VisibilityIcon />
+            </Eye>
+          </Label>
+          <Label>
+            <Input
+              placeholder="confirm password"
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              type="password"
+            />
+            <Eye>
+              <VisibilityIcon />
+            </Eye>
+          </Label>
+
           <Agreement>
             By creating an account i consent to the processing of my personal
             data in accordance with the <b>PRIVACY POLICY</b>
