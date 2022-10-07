@@ -216,7 +216,7 @@ const Cart = () => {
         <Bottom>
           <Info>
             {cart.products?.map((product, i) => (
-              <Product key={i + 1}>
+              <Product key={i}>
                 <ProductDetail>
                   <Image src={product.img} />
                   <Details>
@@ -241,7 +241,9 @@ const Cart = () => {
                     <ProductAmount>{product.quantity}</ProductAmount>
                     <Remove style={{ cursor: "pointer" }} />
                   </ProductAmountContainer>
-                  <ProductPrice>₦ {product.price}</ProductPrice>
+                  <ProductPrice>
+                    ₦ {product.price * product.quantity}
+                  </ProductPrice>
                 </PriceDetails>
               </Product>
             ))}
