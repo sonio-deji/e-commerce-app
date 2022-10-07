@@ -151,7 +151,6 @@ function Product() {
         quantity,
         color,
         size,
-        price: product.price * quantity,
       })
     );
   };
