@@ -152,7 +152,7 @@ const Cart = () => {
   useEffect(() => {
     const makeRequest = async () => {
       try {
-        const res = await userRequest.post("/checkout/payment", {
+        await userRequest.post("/checkout/payment", {
           "transactionID": transactionId.transaction,
           "trxref": transactionId.trxref,
           "amount": cart.total,
