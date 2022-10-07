@@ -73,13 +73,16 @@ function Register() {
     e.preventDefault();
     if (password === confirmPassword) {
       try {
-        await axios.post("http://localhost:5000/api/auth/register", {
-          "firstName": name,
-          "lastName": lastName,
-          "username": username,
-          "password": password,
-          "email": email,
-        });
+        await axios.post(
+          "https://jsstore-api.herokuapp.com/api/auth/register",
+          {
+            "firstName": name,
+            "lastName": lastName,
+            "username": username,
+            "password": password,
+            "email": email,
+          }
+        );
         navigate("/login");
       } catch (error) {
         console.log(error);
