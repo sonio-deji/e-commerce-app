@@ -28,7 +28,7 @@ const Button = styled.button`
 `;
 const Input = styled.input`
   flex: 1;
-  min-width: 40%;
+  min-width: ${(props) => (props.password === "password" ? "100%" : "40%")};
   margin: 20px 10px 0 0;
   padding: 10px;
   outline: none;
@@ -62,11 +62,6 @@ const Error = styled.p`
 const Label = styled.label`
   position: relative;
 `;
-const Eye = styled.div`
-  position: absolute;
-  top: 5px;
-  right: 0;
-`;
 
 function Register() {
   const [username, setUsername] = useState("");
@@ -76,6 +71,8 @@ function Register() {
   const [lastName, setLastName] = useState("");
   const [name, setName] = useState("");
   const [passwordMatch, setPasswordMatch] = useState(false);
+  const [inputType, setInputType] = useState("password");
+
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -103,6 +100,13 @@ function Register() {
       }, 2000);
     }
   };
+  const handleInputType = () => {
+    if (inputType === "password") {
+      setInputType("text");
+    } else {
+      setInputType("password");
+    }
+  };
   return (
     <Container>
       <Wrapper>
@@ -128,21 +132,37 @@ function Register() {
             <Input
               placeholder="password"
               onChange={(e) => setPassword(e.target.value)}
-              type="password"
+              type={inputType}
+              password="password"
             />
-            <Eye>
-              <VisibilityIcon />
-            </Eye>
+            <VisibilityIcon
+              onClick={handleInputType}
+              style={{
+                position: "absolute",
+                top: "25px",
+                right: "5px",
+                color: "teal",
+                cursor: "pointer",
+              }}
+            />
           </Label>
           <Label>
             <Input
               placeholder="confirm password"
               onChange={(e) => setConfirmPassword(e.target.value)}
-              type="password"
+              type={inputType}
+              password="password"
             />
-            <Eye>
-              <VisibilityIcon />
-            </Eye>
+            <VisibilityIcon
+              onClick={handleInputType}
+              style={{
+                position: "absolute",
+                top: "25px",
+                right: "5px",
+                color: "teal",
+                cursor: "pointer",
+              }}
+            />
           </Label>
 
           <Agreement>

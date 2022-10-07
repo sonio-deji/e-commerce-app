@@ -32,7 +32,7 @@ const Button = styled.button`
 `;
 const Input = styled.input`
   flex: 1;
-  min-width: 40%;
+  width: 100%;
   margin: 10px 0;
   padding: 10px;
   outline: none;
@@ -70,11 +70,6 @@ const Error = styled.span`
 const Label = styled.label`
   position: relative;
 `;
-const Eye = styled.div`
-  position: absolute;
-  top: 5px;
-  right: 0;
-`;
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -111,9 +106,15 @@ const Login = () => {
               onChange={(e) => setpassword(e.target.value)}
               type={inputType}
             />
-            <Eye>
-              <VisibilityIcon onCLick={handleInputType} />
-            </Eye>
+            <VisibilityIcon
+              onClick={handleInputType}
+              style={{
+                position: "absolute",
+                top: "15px",
+                right: "5px",
+                color: "teal",
+              }}
+            />
           </Label>
 
           <Button onClick={handleClick} disabled={isFetching}>
