@@ -168,7 +168,7 @@ const Cart = () => {
     } else {
       makeRequest();
     }
-  }, [transactionId, cart.total, history]);
+  }, [transactionId, cart.total]);
 
   //paystack config
   const config = {
