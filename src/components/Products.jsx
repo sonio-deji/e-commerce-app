@@ -56,10 +56,10 @@ function Products({ cat, filter, sort }) {
   return (
     <Container>
       {cat
-        ? filteredProducts.map((item, i) => <Product item={item} key={i} />)
+        ? filteredProducts.map((item, i) => <Product item={item} key={i + 1} />)
         : products
             .slice(0, 8)
-            .map((item, i) => <Product item={item} key={i} />)}
+            .map((item, i) => <Product item={item} key={i + 1} />)}
     </Container>
   );
 }
