@@ -7,7 +7,6 @@ import { useSelector } from "react-redux";
 import { usePaystackPayment } from "react-paystack";
 import { useEffect, useState } from "react";
 import { userRequest } from "../requestMethods";
-import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 
 const Container = styled.div``;
@@ -140,7 +139,6 @@ const Button = styled.button`
 `;
 
 const Cart = () => {
-  const history = useNavigate();
   const cart = useSelector((state) => state.cart);
   const user = useSelector((state) => state.user.user.currentUser.email);
 
@@ -161,7 +159,6 @@ const Cart = () => {
           "message": transactionId.message,
           "status": transactionId.status,
         });
-        history("/success", { data: res.data });
       } catch (error) {
         console.log(error);
       }
