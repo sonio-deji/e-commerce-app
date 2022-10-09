@@ -3,7 +3,6 @@ import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-
 const Container = styled.div`
   width: 100vw;
   height: 100vh;
@@ -48,6 +47,7 @@ const Wrapper = styled.div`
 const Form = styled.form`
   display: flex;
   flex-wrap: wrap;
+  position: relative;
 `;
 const Agreement = styled.span`
   font-size: 12px;
@@ -62,6 +62,30 @@ const Error = styled.p`
 const Label = styled.label`
   position: relative;
 `;
+const LoadingSpinner = styled.div`
+  width: 20px;
+  height: 20px;
+  border: 10px solid black;
+  border-top: 10px solid teal;
+  border-radius: 50%;
+  animation: spinner 1.5s linear infinite;
+  margin: auto;
+  @keyframes spinner {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+`;
+
+const SpinnerContainer = styled.div`
+  position: absolute;
+  bottom: 13px;
+  z-index: 50;
+  right: 50px;
+`;
 
 function Register() {
   const [username, setUsername] = useState("");
@@ -72,11 +96,14 @@ function Register() {
   const [name, setName] = useState("");
   const [passwordMatch, setPasswordMatch] = useState(false);
   const [inputType, setInputType] = useState("password");
+  const [isLoading, setIsLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
 
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
     if (password === confirmPassword) {
       try {
         await axios.post(
@@ -84,20 +111,34 @@ function Register() {
           {
             "firstName": name,
             "lastName": lastName,
-            "username": username,
+            "username": username.toLowerCase(),
             "password": password,
             "email": email,
           }
         );
+        setIsLoading(false);
         navigate("/login");
       } catch (error) {
-        console.log(error);
+        if (error.response.data._message) {
+          setErrorMsg(
+            `${error.response.data._message}, please input all fields`
+          );
+        } else if (error.response.data.keyPattern.username) {
+          setErrorMsg("Username already exists");
+        } else {
+          setErrorMsg("Email already exists");
+        }
+        setTimeout(() => {
+          setErrorMsg("");
+          setIsLoading(false);
+        }, 4000);
       }
     } else {
       setPasswordMatch(true);
       setTimeout(() => {
         setPasswordMatch(false);
-      }, 2000);
+        setIsLoading(false);
+      }, 4000);
     }
   };
   const handleInputType = () => {
@@ -170,8 +211,14 @@ function Register() {
             data in accordance with the <b>PRIVACY POLICY</b>
           </Agreement>
           <Button onClick={handleSubmit}>CREATE</Button>
+          {isLoading && (
+            <SpinnerContainer>
+              <LoadingSpinner></LoadingSpinner>
+            </SpinnerContainer>
+          )}
         </Form>
         {passwordMatch && <Error>passwords do not match</Error>}
+        <Error>{errorMsg}</Error>
       </Wrapper>
     </Container>
   );

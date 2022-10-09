@@ -17,6 +17,7 @@ const Container = styled.div`
   justify-content: center;
 `;
 const Button = styled.button`
+  position: relative;
   width: 40%;
   border: none;
   padding: 15px 20px;
@@ -43,7 +44,7 @@ const Title = styled.h1`
 `;
 const Wrapper = styled.div`
   padding: 20px;
-  width: 25%;
+  width: 30%;
   background-color: white;
 
   @media (max-width: 755px) {
@@ -56,8 +57,9 @@ const Wrapper = styled.div`
 const Form = styled.form`
   display: flex;
   flex-direction: column;
+  position: relative;
 `;
-const Links = styled.a`
+const Links = styled.p`
   margin: 5px 0;
   font-size: 12px;
   text-decoration: underline;
@@ -70,18 +72,50 @@ const Error = styled.span`
 const Label = styled.label`
   position: relative;
 `;
+const LoadingSpinner = styled.div`
+  width: 30px;
+  height: 30px;
+  border: 10px solid black;
+  border-top: 10px solid teal;
+  border-radius: 50%;
+  animation: spinner 1.5s linear infinite;
+  margin: auto;
+  @keyframes spinner {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+`;
+
+const SpinnerContainer = styled.div`
+  position: absolute;
+  bottom: 13px;
+  z-index: 50;
+  right: 50px;
+`;
 
 const Login = () => {
   const dispatch = useDispatch();
   const [username, setusername] = useState("");
   const [password, setpassword] = useState("");
   const [inputType, setInputType] = useState("password");
+  const [loader, setLoader] = useState(false);
+  const [errorMsg, setErrorMsg] = useState(false);
 
-  const { isFetching, error } = useSelector((state) => state.user);
+  const { isFetching, errorLog, error } = useSelector(
+    (state) => state.user.user
+  );
 
   const handleClick = (e) => {
     e.preventDefault();
+    setLoader(true);
     login(dispatch, { username, password });
+    if (error) {
+      setErrorMsg(true);
+    }
   };
   const handleInputType = () => {
     if (inputType === "password") {
@@ -90,7 +124,10 @@ const Login = () => {
       setInputType("password");
     }
   };
-
+  setTimeout(() => {
+    setErrorMsg(false);
+    setLoader(false);
+  }, 6000);
   return (
     <Container>
       <Wrapper>
@@ -98,7 +135,7 @@ const Login = () => {
         <Form>
           <Input
             placeholder="username"
-            onChange={(e) => setusername(e.target.value)}
+            onChange={(e) => setusername(e.target.value.toLowerCase())}
           />
           <Label>
             <Input
@@ -113,18 +150,26 @@ const Login = () => {
                 top: "15px",
                 right: "5px",
                 color: "teal",
+                cursor: "pointer",
               }}
             />
           </Label>
-
-          <Button onClick={handleClick} disabled={isFetching}>
+          <Button disabled={isFetching} onClick={handleClick}>
             LOGIN
           </Button>
-          {error && <Error>Something went wrong</Error>}
+
+          {loader && (
+            <SpinnerContainer>
+              <LoadingSpinner></LoadingSpinner>
+            </SpinnerContainer>
+          )}
         </Form>
+        {errorMsg && <Error>{errorLog}</Error>}
+        <br></br>
+
         <Links>DO NOT REMEMBER THE PASSWORD?</Links>
         <br></br>
-        <Link to="/register">
+        <Link to="/register" style={{ color: "black" }}>
           <Links>CREATE AN ACCOUNT</Links>
         </Link>
       </Wrapper>

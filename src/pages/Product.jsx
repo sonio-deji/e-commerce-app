@@ -176,9 +176,9 @@ function Product() {
           <FilterContainer>
             <Filter>
               <FilterTitle>Color</FilterTitle>
-              {product.color?.map((color, i) => (
+              {product.color?.map((color) => (
                 <FilterColor
-                  key={i + 1}
+                  key={color}
                   color={color}
                   onClick={() => handleColorPick(color)}
                   style={{ border: borderColor && "solid" }}
@@ -190,11 +190,11 @@ function Product() {
                 Size
               </FilterTitle>
               <FilterSize>
-                {product.size?.map((size, i) => (
+                {product.size?.map((size) => (
                   <>
                     <FilterSizeOption>Size</FilterSizeOption>
                     <FilterSizeOption
-                      key={i + 1}
+                      key={size}
                       value={size}
                       onClick={() => handleSetSize(size)}
                     >

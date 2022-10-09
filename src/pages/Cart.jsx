@@ -16,12 +16,20 @@ const Title = styled.h1`
 `;
 const Wrapper = styled.div`
   padding: 20px;
+  @media (max-width: 693px) {
+    padding-left: 5px;
+    padding-right: 5px;
+  }
 `;
 const Top = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 20px;
+  @media (max-width: 693px) {
+    padding-left: 5px;
+    padding-right: 5px;
+  }
 `;
 const TopButton = styled.button`
   padding: 10px;
@@ -37,7 +45,7 @@ const Bottom = styled.div`
   display: flex;
   justify-content: space-between;
 
-  @media (max-width: 673px) {
+  @media (max-width: 815px) {
     flex-direction: column;
   }
 `;
@@ -55,22 +63,35 @@ const Product = styled.div`
   display: flex;
   justify-content: space-between;
 
-  @media (max-width: 479px) {
+  @media (max-width: 595px) {
     flex-direction: column;
   }
 `;
 const ProductDetail = styled.div`
   flex: 2;
   display: flex;
+  @media (max-width: 461px) {
+    flex-direction: column;
+  }
 `;
 const Image = styled.img`
   width: 200px;
+  @media (max-width: 461px) {
+    width: auto;
+    max-width: 150px;
+    display: block;
+    margin: 0 auto;
+  }
 `;
 const Details = styled.div`
   padding: 20px;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
+  @media (max-width: 461px) {
+    padding: unset;
+    width: 100%;
+  }
 `;
 const ProductName = styled.span`
   margin-bottom: 10px;
@@ -121,6 +142,7 @@ const Summary = styled.div`
 const SummaryTitle = styled.h1`
   font-weight: 200;
 `;
+const ProductDesc = styled.p``;
 const SummaryItem = styled.div`
   margin: 30px 0;
   display: flex;
@@ -175,7 +197,7 @@ const Cart = () => {
     reference: new Date().getTime().toString(),
     email: user,
     amount: cart.total * 100,
-    publicKey: "pk_test_61ab2a20131f59a6f24389b99b2a51a9fc1b527b",
+    publicKey: process.env.REACT_APP_PAYSTACK,
   };
   const onSuccess = (reference) => {
     setTransactionId({
@@ -189,7 +211,6 @@ const Cart = () => {
 
   const onClose = () => {};
   const initializePayment = usePaystackPayment(config);
-
   return (
     <Container>
       <Navbar />
@@ -215,8 +236,8 @@ const Cart = () => {
         </Top>
         <Bottom>
           <Info>
-            {cart.products?.map((product, i) => (
-              <Product key={i}>
+            {cart.products?.map((product) => (
+              <Product key={product._id}>
                 <ProductDetail>
                   <Image src={product.img} />
                   <Details>
@@ -228,6 +249,10 @@ const Cart = () => {
                       <b>ID:</b>
                       {product._id}
                     </ProductId>
+                    <ProductDesc>
+                      <b>Description:</b>
+                      {product.desc}
+                    </ProductDesc>
                     <ProductColor color={product.color} />
                     <ProductSize>
                       <b>Size:</b>

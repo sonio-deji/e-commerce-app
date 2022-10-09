@@ -93,8 +93,8 @@ function Slider() {
         <ArrowLeftOutlined />
       </Arrow>
       <Wrapper slideIndex={slideIndex}>
-        {sliderItems.map((item, i) => (
-          <Slide bg={item.bg} key={i + 1}>
+        {sliderItems.map((item) => (
+          <Slide bg={item.bg} key={item.id}>
             <ImgContainer>
               <Image src={item.img} />
             </ImgContainer>
