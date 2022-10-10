@@ -18,8 +18,8 @@ function Products({ cat, filter, sort }) {
       try {
         const products = await axios.get(
           cat
-            ? `https://jsstore-api.herokuapp.com/api/products?category=${cat}`
-            : "https://jsstore-api.herokuapp.com/api/products"
+            ? `https://js-store.onrender.com/api/products?category=${cat}`
+            : "https://js-store.onrender.com/api/products"
         );
         setproducts(products.data);
       } catch (error) {

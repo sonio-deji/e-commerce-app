@@ -104,17 +104,15 @@ function Register() {
     setIsLoading(true);
     if (password === confirmPassword) {
       try {
-        await axios.post(
-          "https://jsstore-api.herokuapp.com/api/auth/register",
-          {
-            "username": username.toLowerCase(),
-            "password": password,
-            "email": email.toLowerCase(),
-          }
-        );
+        await axios.post("https://js-store.onrender.com/api/auth/register", {
+          "username": username.toLowerCase(),
+          "password": password,
+          "email": email.toLowerCase(),
+        });
         setIsLoading(false);
         navigate("/login");
       } catch (error) {
+        console.log(error);
         if (error.response.data._message) {
           setErrorMsg(
             `${error.response.data._message}, please input all fields`
