@@ -85,7 +85,7 @@ const Logo = styled.h1`
 const Navbar = () => {
   const cart = useSelector((state) => state.cart);
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.user.user.currentUser);
+  const user = useSelector((state) => state.user.currentUser);
   const [signIn, setSignIn] = useState(false);
   const [signOut, setSignOut] = useState(false);
 

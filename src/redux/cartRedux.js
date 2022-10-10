@@ -14,8 +14,10 @@ const cartSlice = createSlice({
       );
       if (itemIndex >= 0) {
         state.products[itemIndex].quantity += 1;
+        state.quantity += 1;
       } else {
         state.quantity += 1;
+
         const tempProduct = { ...action.payload, quantity: 1 };
         state.products.push(tempProduct);
       }
@@ -57,8 +59,12 @@ const cartSlice = createSlice({
       state.quantity = quantity;
       state.total = total;
     },
+    clearCart(state) {
+      state.products = [];
+    },
   },
 });
 
-export const { addProducts, reduceQuantity, getTotal } = cartSlice.actions;
+export const { addProducts, reduceQuantity, getTotal, clearCart } =
+  cartSlice.actions;
 export default cartSlice.reducer;

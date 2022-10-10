@@ -105,9 +105,7 @@ const Login = () => {
   const [loader, setLoader] = useState(false);
   const [errorMsg, setErrorMsg] = useState(false);
 
-  const { isFetching, errorLog, error } = useSelector(
-    (state) => state.user.user
-  );
+  const { isFetching, errorLog, error } = useSelector((state) => state.user);
 
   const handleClick = (e) => {
     e.preventDefault();

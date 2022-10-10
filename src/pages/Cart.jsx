@@ -9,7 +9,12 @@ import { useEffect, useState } from "react";
 import { userRequest } from "../requestMethods";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { addProducts, getTotal, reduceQuantity } from "../redux/cartRedux";
+import {
+  addProducts,
+  getTotal,
+  reduceQuantity,
+  clearCart,
+} from "../redux/cartRedux";
 
 const Container = styled.div``;
 const Title = styled.h1`
@@ -41,6 +46,14 @@ const TopButton = styled.button`
   background-color: ${(props) =>
     props.type === "filled" ? "black" : "transparent"};
   color: ${(props) => props.type === "filled" && "white"};
+`;
+const Clear = styled.button`
+  padding: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  background-color: transparent;
+  padding: 10px;
+  margin: 20px;
 `;
 
 const Bottom = styled.div`
@@ -141,6 +154,7 @@ const Summary = styled.div`
   padding: 20px;
   height: 50vh;
 `;
+const NoItemInCart = styled.h2``;
 const SummaryTitle = styled.h1`
   font-weight: 200;
 `;
@@ -164,7 +178,7 @@ const Button = styled.button`
 
 const Cart = () => {
   const cart = useSelector((state) => state.cart);
-  const user = useSelector((state) => state.user.user.currentUser.email);
+  const user = useSelector((state) => state.user.currentUser.email);
   const dispatch = useDispatch();
 
   const [transactionId, setTransactionId] = useState({
@@ -219,6 +233,9 @@ const Cart = () => {
 
   const onClose = () => {};
   const initializePayment = usePaystackPayment(config);
+  const handleClearCart = () => {
+    dispatch(clearCart());
+  };
   return (
     <Container>
       <Navbar />
@@ -242,52 +259,58 @@ const Cart = () => {
             CHECK OUT NOW
           </TopButton>
         </Top>
+        <Clear onClick={handleClearCart}>CLEAR CART</Clear>
+
         <Bottom>
           <Info>
-            {cart.products?.map((product) => (
-              <Product key={product._id}>
-                <ProductDetail>
-                  <Image src={product.img} />
-                  <Details>
-                    <ProductName>
-                      <b>Product:</b>
-                      {product.title}
-                    </ProductName>
-                    <ProductId>
-                      <b>ID:</b>
-                      {product._id}
-                    </ProductId>
-                    <ProductDesc>
-                      <b>Description:</b>
-                      {product.desc}
-                    </ProductDesc>
-                    <ProductColor color={product.color} />
-                    <ProductSize>
-                      <b>Size:</b>
-                      {product.size}
-                    </ProductSize>
-                  </Details>
-                </ProductDetail>
-                <PriceDetails>
-                  <ProductAmountContainer>
-                    <Add
-                      style={{ cursor: "pointer" }}
-                      onClick={() => handleIncreaseQuantity(product)}
-                    />
+            {cart.products.length === 0 ? (
+              <NoItemInCart>No items in cart</NoItemInCart>
+            ) : (
+              cart.products?.map((product) => (
+                <Product key={product._id}>
+                  <ProductDetail>
+                    <Image src={product.img} />
+                    <Details>
+                      <ProductName>
+                        <b>Product:</b>
+                        {product.title}
+                      </ProductName>
+                      <ProductId>
+                        <b>ID:</b>
+                        {product._id}
+                      </ProductId>
+                      <ProductDesc>
+                        <b>Description:</b>
+                        {product.desc}
+                      </ProductDesc>
+                      <ProductColor color={product.color} />
+                      <ProductSize>
+                        <b>Size:</b>
+                        {product.size}
+                      </ProductSize>
+                    </Details>
+                  </ProductDetail>
+                  <PriceDetails>
+                    <ProductAmountContainer>
+                      <Add
+                        style={{ cursor: "pointer" }}
+                        onClick={() => handleIncreaseQuantity(product)}
+                      />
 
-                    <ProductAmount>{product.quantity}</ProductAmount>
+                      <ProductAmount>{product.quantity}</ProductAmount>
 
-                    <Remove
-                      style={{ cursor: "pointer" }}
-                      onClick={() => handleDecreaseQuantity(product)}
-                    />
-                  </ProductAmountContainer>
-                  <ProductPrice>
-                    ₦ {product.price * product.quantity}
-                  </ProductPrice>
-                </PriceDetails>
-              </Product>
-            ))}
+                      <Remove
+                        style={{ cursor: "pointer" }}
+                        onClick={() => handleDecreaseQuantity(product)}
+                      />
+                    </ProductAmountContainer>
+                    <ProductPrice>
+                      ₦ {product.price * product.quantity}
+                    </ProductPrice>
+                  </PriceDetails>
+                </Product>
+              ))
+            )}
             <Hr />
           </Info>
           <Summary>

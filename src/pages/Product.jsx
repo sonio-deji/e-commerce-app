@@ -21,7 +21,6 @@ const Wrapper = styled.div`
 `;
 const ImgContainer = styled.div`
   flex: 1;
-  height: 90vh;
   @media (max-width: 881px) {
     height: 50vh;
   }
