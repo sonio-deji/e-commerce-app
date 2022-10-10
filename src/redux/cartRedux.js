@@ -34,7 +34,6 @@ const cartSlice = createSlice({
       );
       if (state.products[itemIndex].quantity > 1) {
         state.products[itemIndex].quantity -= 1;
-        state.total += action.payload.price % action.payload.quantity;
       } else if ((state.products[itemIndex].quantity = 1)) {
         const nextCartItem = state.products.filter(
           (item) => item._id !== action.payload._id
