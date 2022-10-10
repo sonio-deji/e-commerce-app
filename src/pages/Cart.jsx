@@ -1,5 +1,5 @@
-import { Add, Remove } from "@mui/icons-material";
 import styled from "styled-components";
+import { Add, Remove } from "@mui/icons-material";
 import Announcement from "../components/Announcement";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
@@ -8,6 +8,8 @@ import { usePaystackPayment } from "react-paystack";
 import { useEffect, useState } from "react";
 import { userRequest } from "../requestMethods";
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { addProducts, getTotal, reduceQuantity } from "../redux/cartRedux";
 
 const Container = styled.div``;
 const Title = styled.h1`
@@ -163,6 +165,7 @@ const Button = styled.button`
 const Cart = () => {
   const cart = useSelector((state) => state.cart);
   const user = useSelector((state) => state.user.user.currentUser.email);
+  const dispatch = useDispatch();
 
   const [transactionId, setTransactionId] = useState({
     transaction: "",
@@ -171,7 +174,14 @@ const Cart = () => {
     status: "",
   });
 
+  const handleDecreaseQuantity = (product) => {
+    dispatch(reduceQuantity(product));
+  };
+  const handleIncreaseQuantity = (product) => {
+    dispatch(addProducts(product));
+  };
   useEffect(() => {
+    dispatch(getTotal());
     const makeRequest = async () => {
       try {
         await userRequest.post("/checkout/payment", {
@@ -181,23 +191,21 @@ const Cart = () => {
           "message": transactionId.message,
           "status": transactionId.status,
         });
-      } catch (error) {
-        console.log(error);
-      }
+      } catch (error) {}
     };
     if (transactionId.message === "") {
       return;
     } else {
       makeRequest();
     }
-  }, [transactionId, cart.total]);
+  }, [transactionId, cart, dispatch]);
 
   //paystack config
   const config = {
     reference: new Date().getTime().toString(),
     email: user,
     amount: cart.total * 100,
-    publicKey: process.env.REACT_APP_PAYSTACK,
+    publicKey: "pk_test_61ab2a20131f59a6f24389b99b2a51a9fc1b527b",
   };
   const onSuccess = (reference) => {
     setTransactionId({
@@ -262,9 +270,17 @@ const Cart = () => {
                 </ProductDetail>
                 <PriceDetails>
                   <ProductAmountContainer>
-                    <Add style={{ cursor: "pointer" }} />
+                    <Add
+                      style={{ cursor: "pointer" }}
+                      onClick={() => handleIncreaseQuantity(product)}
+                    />
+
                     <ProductAmount>{product.quantity}</ProductAmount>
-                    <Remove style={{ cursor: "pointer" }} />
+
+                    <Remove
+                      style={{ cursor: "pointer" }}
+                      onClick={() => handleDecreaseQuantity(product)}
+                    />
                   </ProductAmountContainer>
                   <ProductPrice>
                     ₦ {product.price * product.quantity}

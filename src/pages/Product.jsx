@@ -1,4 +1,4 @@
-import { Add, Remove } from "@mui/icons-material";
+// import { Add, Remove } from "@mui/icons-material";
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import styled from "styled-components";
@@ -84,10 +84,10 @@ const AddContainer = styled.div`
     width: 100%;
   }
 `;
-const AmountContainer = styled.div`
-  display: flex;
-  align-items: center;
-`;
+// const AmountContainer = styled.div`
+//   display: flex;
+//   align-items: center;
+// `;
 const Button = styled.button`
   padding: 15px;
   border: 2px solid teal;
@@ -97,19 +97,19 @@ const Button = styled.button`
     background-color: lightgray;
   }
 `;
-const Amount = styled.span`
-  width: 30px;
-  height: 30px;
-  border-radius: 10px;
-  border: 1px solid teal;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 5px;
-`;
-const Increment = styled.div`
-  cursor: pointer;
-`;
+// const Amount = styled.span`
+//   width: 30px;
+//   height: 30px;
+//   border-radius: 10px;
+//   border: 1px solid teal;
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+//   margin: 0 5px;
+// `;
+// const Increment = styled.div`
+//   cursor: pointer;
+// `;
 
 function Product() {
   // get and assign url location
@@ -117,7 +117,7 @@ function Product() {
   const id = location.pathname.split("/")[2];
 
   const [product, setProduct] = useState({});
-  const [quantity, setQuantity] = useState(1);
+  // const [quantity, setQuantity] = useState(1);
   const [color, setColor] = useState("");
   const [size, setSize] = useState("");
   const [borderColor, setBorderColor] = useState(false);
@@ -125,13 +125,13 @@ function Product() {
   //redux dispatch
   const dispatch = useDispatch();
 
-  const handleQuantity = (quant) => {
-    if (quant === "i") {
-      setQuantity((prev) => prev + 1);
-    } else {
-      quantity > 1 && setQuantity((prev) => prev - 1);
-    }
-  };
+  // const handleQuantity = (quant) => {
+  //   if (quant === "i") {
+  //     setQuantity((prev) => prev + 1);
+  //   } else {
+  //     quantity > 1 && setQuantity((prev) => prev - 1);
+  //   }
+  // };
 
   useEffect(() => {
     const getProduct = async () => {
@@ -148,7 +148,6 @@ function Product() {
     dispatch(
       addProducts({
         ...product,
-        quantity,
         color,
         size,
       })
@@ -176,9 +175,9 @@ function Product() {
           <FilterContainer>
             <Filter>
               <FilterTitle>Color</FilterTitle>
-              {product.color?.map((color) => (
+              {product.color?.map((color, i) => (
                 <FilterColor
-                  key={color}
+                  key={i}
                   color={color}
                   onClick={() => handleColorPick(color)}
                   style={{ border: borderColor && "solid" }}
@@ -190,23 +189,20 @@ function Product() {
                 Size
               </FilterTitle>
               <FilterSize>
-                {product.size?.map((size) => (
-                  <>
-                    <FilterSizeOption>Size</FilterSizeOption>
-                    <FilterSizeOption
-                      key={size}
-                      value={size}
-                      onClick={() => handleSetSize(size)}
-                    >
-                      {size}
-                    </FilterSizeOption>
-                  </>
+                {product.size?.map((size, i) => (
+                  <FilterSizeOption
+                    value={size}
+                    onClick={() => handleSetSize(size)}
+                    key={i}
+                  >
+                    {size}
+                  </FilterSizeOption>
                 ))}
               </FilterSize>
             </Filter>
           </FilterContainer>
           <AddContainer>
-            <AmountContainer>
+            {/* <AmountContainer>
               <Increment>
                 <Remove onClick={() => handleQuantity("d")} />
               </Increment>
@@ -214,7 +210,7 @@ function Product() {
               <Increment>
                 <Add onClick={() => handleQuantity("i")} />
               </Increment>
-            </AmountContainer>
+            </AmountContainer> */}
             <Button onClick={handleClick}>ADD TO CART</Button>
           </AddContainer>
         </InfoContainer>
