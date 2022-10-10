@@ -115,7 +115,6 @@ function Register() {
         setIsLoading(false);
         navigate("/login");
       } catch (error) {
-        console.log(error);
         if (error.response.data._message) {
           setErrorMsg(
             `${error.response.data._message}, please input all fields`
