@@ -92,8 +92,6 @@ function Register() {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [name, setName] = useState("");
   const [passwordMatch, setPasswordMatch] = useState(false);
   const [inputType, setInputType] = useState("password");
   const [isLoading, setIsLoading] = useState(false);
@@ -109,8 +107,6 @@ function Register() {
         await axios.post(
           "https://jsstore-api.herokuapp.com/api/auth/register",
           {
-            "firstName": name,
-            "lastName": lastName,
             "username": username.toLowerCase(),
             "password": password,
             "email": email.toLowerCase(),
@@ -154,14 +150,6 @@ function Register() {
       <Wrapper>
         <Title>CREATE AN ACCOUNT</Title>
         <Form onSubmit={handleSubmit}>
-          <Input
-            placeholder="First name"
-            onChange={(e) => setName(e.target.value)}
-          />
-          <Input
-            placeholder="Last name"
-            onChange={(e) => setLastName(e.target.value)}
-          />
           <Input
             placeholder="Username"
             onChange={(e) => setUsername(e.target.value)}
