@@ -113,7 +113,7 @@ function Register() {
             "lastName": lastName,
             "username": username.toLowerCase(),
             "password": password,
-            "email": email,
+            "email": email.toLowerCase(),
           }
         );
         setIsLoading(false);
