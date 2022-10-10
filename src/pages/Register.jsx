@@ -107,16 +107,13 @@ function Register() {
     setIsLoading(true);
     if (password === confirmPassword) {
       try {
-        await axios.post(
-          "https://jsstore-api.herokuapp.com/api/auth/register",
-          {
-            "firstName": firstName,
-            "lastName": lastName,
-            "username": username.toLowerCase(),
-            "password": password,
-            "email": email.toLowerCase(),
-          }
-        );
+        await axios.post("https://js-store.onrender.com/api/auth/register", {
+          "firstName": firstName,
+          "lastName": lastName,
+          "username": username.toLowerCase(),
+          "password": password,
+          "email": email.toLowerCase(),
+        });
         setIsLoading(false);
         navigate("/login");
       } catch (error) {
