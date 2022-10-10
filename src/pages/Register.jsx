@@ -90,6 +90,9 @@ const SpinnerContainer = styled.div`
 function Register() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+
   const [email, setEmail] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [passwordMatch, setPasswordMatch] = useState(false);
@@ -104,11 +107,16 @@ function Register() {
     setIsLoading(true);
     if (password === confirmPassword) {
       try {
-        await axios.post("https://js-store.onrender.com/api/auth/register", {
-          "username": username.toLowerCase(),
-          "password": password,
-          "email": email.toLowerCase(),
-        });
+        await axios.post(
+          "https://jsstore-api.herokuapp.com/api/auth/register",
+          {
+            "firstName": firstName,
+            "lastName": lastName,
+            "username": username.toLowerCase(),
+            "password": password,
+            "email": email.toLowerCase(),
+          }
+        );
         setIsLoading(false);
         navigate("/login");
       } catch (error) {
@@ -147,6 +155,14 @@ function Register() {
       <Wrapper>
         <Title>CREATE AN ACCOUNT</Title>
         <Form onSubmit={handleSubmit}>
+          <Input
+            placeholder="Username"
+            onChange={(e) => setFirstName(e.target.value)}
+          />
+          <Input
+            placeholder="email"
+            onChange={(e) => setLastName(e.target.value)}
+          />
           <Input
             placeholder="Username"
             onChange={(e) => setUsername(e.target.value)}
