@@ -154,9 +154,12 @@ const Summary = styled.div`
   padding: 20px;
   height: 50vh;
 `;
-const NoItemInCart = styled.h2``;
+const NoItemInCart = styled.h2`
+  padding-left: 20px;
+`;
 const SummaryTitle = styled.h1`
-  font-weight: 200;
+  font-weight: 300;
+  font-size: 15px;
 `;
 const ProductDesc = styled.p``;
 const SummaryItem = styled.div`
@@ -178,7 +181,7 @@ const Button = styled.button`
 
 const Cart = () => {
   const cart = useSelector((state) => state.cart);
-  const user = useSelector((state) => state.user.currentUser.email);
+  const user = useSelector((state) => state.user.currentUser);
   const dispatch = useDispatch();
 
   const [transactionId, setTransactionId] = useState({
@@ -217,7 +220,7 @@ const Cart = () => {
   //paystack config
   const config = {
     reference: new Date().getTime().toString(),
-    email: user,
+    email: user.email,
     amount: cart.total * 100,
     publicKey: "pk_test_61ab2a20131f59a6f24389b99b2a51a9fc1b527b",
   };
@@ -314,7 +317,10 @@ const Cart = () => {
             <Hr />
           </Info>
           <Summary>
-            <SummaryTitle>ORDER SUMMARY</SummaryTitle>
+            <SummaryTitle>
+              ORDER SUMMARY FOR <b>{user.username.toUpperCase()}</b>
+            </SummaryTitle>
+
             <SummaryItem>
               <SummaryItemText>Subtotal</SummaryItemText>
               <SummaryItemText>₦ {cart.total}</SummaryItemText>

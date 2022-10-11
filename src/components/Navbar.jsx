@@ -77,8 +77,9 @@ const Input = styled.input`
 `;
 const Logo = styled.h1`
   font-weight: bold;
+  font-size: 18px;
   @media (max-width: 531px) {
-    font-size: 20px;
+    font-size: 15px;
   }
 `;
 
@@ -112,7 +113,7 @@ const Navbar = () => {
           </SearchContainer>
         </Left>
         <Center>
-          <Logo>SONIO.</Logo>
+          <Logo>SONIO'S APPAREL</Logo>
         </Center>
         <Right>
           {signIn && (
