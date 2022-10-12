@@ -197,24 +197,19 @@ const Cart = () => {
   const handleIncreaseQuantity = (product) => {
     dispatch(addProducts(product));
   };
+  const makeRequest = async (transaction, trxref, message, status) => {
+    try {
+      await userRequest.post("/checkout/payment", {
+        "transactionID": transaction,
+        "trxref": trxref,
+        "amount": cart.total,
+        "message": message,
+        "status": status,
+      });
+    } catch (error) {}
+  };
   useEffect(() => {
     dispatch(getTotal());
-    const makeRequest = async () => {
-      try {
-        await userRequest.post("/checkout/payment", {
-          "transactionID": transactionId.transaction,
-          "trxref": transactionId.trxref,
-          "amount": cart.total,
-          "message": transactionId.message,
-          "status": transactionId.status,
-        });
-      } catch (error) {}
-    };
-    if (transactionId.message === "") {
-      return;
-    } else {
-      makeRequest();
-    }
   }, [transactionId, cart, dispatch]);
 
   //paystack config
@@ -225,12 +220,12 @@ const Cart = () => {
     publicKey: "pk_test_61ab2a20131f59a6f24389b99b2a51a9fc1b527b",
   };
   const onSuccess = (reference) => {
-    setTransactionId({
-      transaction: reference.transaction,
-      trxref: reference.trxref,
-      message: reference.message,
-      status: reference.status,
-    });
+    makeRequest(
+      reference.transaction,
+      reference.trxref,
+      reference.message,
+      reference.status
+    );
   };
   // paystack on close function
 
