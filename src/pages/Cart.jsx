@@ -184,13 +184,6 @@ const Cart = () => {
   const user = useSelector((state) => state.user.currentUser);
   const dispatch = useDispatch();
 
-  const [transactionId, setTransactionId] = useState({
-    transaction: "",
-    trxref: "",
-    message: "",
-    status: "",
-  });
-
   const handleDecreaseQuantity = (product) => {
     dispatch(reduceQuantity(product));
   };
@@ -210,7 +203,7 @@ const Cart = () => {
   };
   useEffect(() => {
     dispatch(getTotal());
-  }, [transactionId, cart, dispatch]);
+  }, [cart, dispatch]);
 
   //paystack config
   const config = {
