@@ -20,7 +20,8 @@ const Home = () => {
     <div>
       <Announcement />
       <Navbar />
-      <Username>Welcome, {user.username}</Username>
+      {user ? <Username>Welcome, {user.username}</Username> : ""}
+
       <Slider />
       <Categories />
       <Products />

@@ -5,8 +5,8 @@ import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import { useSelector } from "react-redux";
 import { usePaystackPayment } from "react-paystack";
-import { useEffect } from "react";
-import { userRequest } from "../requestMethods";
+import { useEffect, useState } from "react";
+import { publicRequest } from "../requestMethods";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import {
@@ -178,10 +178,16 @@ const Button = styled.button`
   color: white;
   border: none;
 `;
+const Error = styled.p`
+  font-size: 15px;
+  color: red;
+`;
 
 const Cart = () => {
+  const [error, setError] = useState(false);
   const cart = useSelector((state) => state.cart);
   const user = useSelector((state) => state.user.currentUser);
+
   const dispatch = useDispatch();
 
   const handleDecreaseQuantity = (product) => {
@@ -192,7 +198,7 @@ const Cart = () => {
   };
   const makeRequest = async (transaction, trxref, message, status) => {
     try {
-      await userRequest.post("/checkout/payment", {
+      await publicRequest.post("/checkout/payment", {
         "transactionID": transaction,
         "trxref": trxref,
         "amount": cart.total,
@@ -208,11 +214,12 @@ const Cart = () => {
   //paystack config
   const config = {
     reference: new Date().getTime().toString(),
-    email: user.email,
+    email: user === null ? "" : user.email,
     amount: cart.total * 100,
     publicKey: "pk_test_61ab2a20131f59a6f24389b99b2a51a9fc1b527b",
   };
   const onSuccess = (reference) => {
+    console.log(reference);
     makeRequest(
       reference.transaction,
       reference.trxref,
@@ -227,6 +234,16 @@ const Cart = () => {
   const handleClearCart = () => {
     dispatch(clearCart());
   };
+  const handlePayment = () => {
+    if (user === null) {
+      setError(true);
+    } else {
+      initializePayment(onSuccess, onClose);
+    }
+  };
+  setTimeout(() => {
+    setError(false);
+  }, 4000);
   return (
     <Container>
       <Navbar />
@@ -241,12 +258,9 @@ const Cart = () => {
             <TopText>Shopping Bag({cart.quantity})</TopText>
             <TopText>Your Wishlist</TopText>
           </TopTexts>
-          <TopButton
-            type="filled"
-            onClick={() => {
-              initializePayment(onSuccess, onClose);
-            }}
-          >
+          {error && <Error>Please sign in to make purchase</Error>}
+
+          <TopButton type="filled" onClick={handlePayment}>
             CHECK OUT NOW
           </TopButton>
         </Top>
@@ -305,9 +319,14 @@ const Cart = () => {
             <Hr />
           </Info>
           <Summary>
-            <SummaryTitle>
-              ORDER SUMMARY FOR <b>{user.username.toUpperCase()}</b>
-            </SummaryTitle>
+            {user === null ? (
+              <SummaryTitle>ORDER SUMMARY</SummaryTitle>
+            ) : (
+              <SummaryTitle>
+                {" "}
+                ORDER SUMMARY FOR {user.username.toUpperCase()}
+              </SummaryTitle>
+            )}
 
             <SummaryItem>
               <SummaryItemText>Subtotal</SummaryItemText>
@@ -325,13 +344,8 @@ const Cart = () => {
               <SummaryItemText type="total">Total</SummaryItemText>
               <SummaryItemText type="total">₦ {cart.total}</SummaryItemText>
             </SummaryItem>
-            <Button
-              onClick={() => {
-                initializePayment(onSuccess, onClose);
-              }}
-            >
-              CHECKOUT NOW
-            </Button>
+            <Button onClick={handlePayment}>CHECKOUT NOW</Button>
+            {error && <Error>Please sign in to make purchase</Error>}
           </Summary>
         </Bottom>
       </Wrapper>
