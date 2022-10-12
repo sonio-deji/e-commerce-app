@@ -5,7 +5,7 @@ import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import { useSelector } from "react-redux";
 import { usePaystackPayment } from "react-paystack";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { userRequest } from "../requestMethods";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
