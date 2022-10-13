@@ -10,10 +10,10 @@ const Container = styled.div`
   justify-content: space-between;
 `;
 const LoadingSpinner = styled.div`
-  width: 50px;
-  height: 50px;
-  border: 10px solid white;
-  border-top: 10px solid gray;
+  width: 120px;
+  height: 120px;
+  border: 10px solid black;
+  border-top: 10px solid white;
   border-radius: 50%;
   animation: spinner 1.5s linear infinite;
   margin: auto;
@@ -28,10 +28,12 @@ const LoadingSpinner = styled.div`
 `;
 
 const SpinnerContainer = styled.div`
-  position: absolute;
-  bottom: 13px;
   z-index: 50;
-  right: 50px;
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
 `;
 function Products({ cat, filter, sort }) {
   const [products, setproducts] = useState([]);
