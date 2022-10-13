@@ -9,9 +9,34 @@ const Container = styled.div`
   flex-wrap: wrap;
   justify-content: space-between;
 `;
+const LoadingSpinner = styled.div`
+  width: 50px;
+  height: 50px;
+  border: 10px solid white;
+  border-top: 10px solid gray;
+  border-radius: 50%;
+  animation: spinner 1.5s linear infinite;
+  margin: auto;
+  @keyframes spinner {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+`;
+
+const SpinnerContainer = styled.div`
+  position: absolute;
+  bottom: 13px;
+  z-index: 50;
+  right: 50px;
+`;
 function Products({ cat, filter, sort }) {
   const [products, setproducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const getProducts = async () => {
@@ -29,6 +54,9 @@ function Products({ cat, filter, sort }) {
     getProducts();
   }, [cat]);
   useEffect(() => {
+    if (products.length >= 1) {
+      setIsLoading(false);
+    }
     cat &&
       setFilteredProducts(
         products.filter((item) => {
@@ -55,6 +83,11 @@ function Products({ cat, filter, sort }) {
   }, [sort]);
   return (
     <Container>
+      {isLoading && (
+        <SpinnerContainer>
+          <LoadingSpinner></LoadingSpinner>
+        </SpinnerContainer>
+      )}
       {cat
         ? filteredProducts.map((item) => <Product item={item} key={item._id} />)
         : products
